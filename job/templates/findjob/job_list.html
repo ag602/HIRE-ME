@@ -1,0 +1,306 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+		<!-- Spacer -->
+		<div class="margin-top-90"></div>
+		<!-- Spacer / End-->
+
+		<!-- Page Content
+================================================== -->
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-3 col-lg-4">
+                    <form method="get" action="{% url 'search' %}">
+					<div class="sidebar-container">
+
+						<!-- Location -->
+						<div class="sidebar-widget">
+							<h3>Location</h3>
+							<div class="input-with-icon">
+								<div id="autocomplete-container">
+									<input id="autocomplete-input" type="text" placeholder="Location">
+								</div>
+								<i class="icon-material-outline-location-on"></i>
+							</div>
+						</div>
+{#						<!-- Keywords -->#}
+{#						<div class="sidebar-widget">#}
+{#							<h3>Keywords</h3>#}
+{#							<div class="keywords-container">#}
+{#								<div class="keyword-input-container">#}
+{#									<input type="text" class="keyword-input" placeholder="e.g. job title" />#}
+{#									<button class="keyword-input-button ripple-effect"><i#}
+{#											class="icon-material-outline-add"></i></button>#}
+{#								</div>#}
+{#								<div class="keywords-list">#}
+{#									<!-- keywords go here -->#}
+{#								</div>#}
+{#								<div class="clearfix"></div>#}
+{#							</div>#}
+{#						</div>#}
+
+						<!-- Category -->
+						<div class="sidebar-widget">
+							<h3>Category</h3>
+							<select name="category" class="selectpicker default" multiple data-selected-text-format="count"
+								data-size="7" title="All Categories">
+								<option>Accounting and Finance</option>
+                                <option>Clerical & Data Entry</option>
+                                <option>Counseling</option>
+                                <option>Court Administration</option>
+                                <option>Human Resources</option>
+                                <option>Investigative</option>
+                                <option>IT and Computers</option>
+                                <option>Law Enforcement</option>
+                                <option>Management</option>
+                                <option>Miscellaneous</option>
+                                <option>Public Relations</option>
+							</select>
+						</div>
+
+						<!-- Job Types -->
+						<div class="sidebar-widget">
+							<h3>Job Type</h3>
+
+							<div class="switches-list">
+								<div class="switch-container">
+									<label class="switch"><input id="freelance" type="checkbox" name="type" value="Freelance" multiple><span class="switch-button"></span>
+										Freelance</label>
+								</div>
+
+
+								<div class="switch-container">
+									<label class="switch"><input type="checkbox" name="type" value="Full Time" multiple><span class="switch-button"></span>
+										Full Time</label>
+								</div>
+
+								<div class="switch-container">
+									<label class="switch"><input type="checkbox" name="type" value="Part Time"><span class="switch-button"></span>
+										Part Time</label>
+								</div>
+
+								<div class="switch-container">
+									<label class="switch"><input type="checkbox" name="type" value="Internship"><span class="switch-button"></span>
+										Internship</label>
+								</div>
+							</div>
+
+						</div>
+{##}
+{#						<!-- Salary -->#}
+{#						<div class="sidebar-widget">#}
+{#							<h3>Salary</h3>#}
+{#							<div class="margin-top-55"></div>#}
+{##}
+{#							<!-- Range Slider -->#}
+{#							<input name="stipend" class="range-slider" type="text" value="" data-slider-currency="$"#}
+{#								data-slider-min="1500" data-slider-max="15000" data-slider-step="100"#}
+{#								data-slider-value="[1500,15000]" />#}
+{#						</div>#}
+
+						<!-- Tags -->
+
+					</div>
+                       <button type="submit" class="button ripple-effect"><i
+							class="icon-material-outline-search"></i> Search </button>
+                  </form>
+				</div>
+				<div class="col-xl-9 col-lg-8 content-left-offset">
+
+					<h3 class="page-title">Search Results</h3>
+
+					<div class="notify-box margin-top-15">
+						<div class="switch-container">
+							<label class="switch"><input type="checkbox"><span class="switch-button"></span><span
+									class="switch-text">Turn on email alerts for this search</span></label>
+						</div>
+
+						<div class="sort-by">
+							<span>Sort by:</span>
+							<select class="selectpicker hide-tick">
+								<option>Relevance</option>
+								<option>Newest</option>
+								<option>Oldest</option>
+								<option>Random</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="listings-container margin-top-35">
+
+						<!-- Job Listing -->
+                        {% for job in page_obj %}
+
+						<a href="{% url 'jobpage' %}{{ job.id }}" class="job-listing">
+
+							<!-- Job Listing Details -->
+							<div class="job-listing-details">
+								<!-- Logo -->
+								<div class="job-listing-company-logo">
+								</div>
+
+								<!-- Details -->
+								<div class="job-listing-description">
+									<h4 class="job-listing-company">{{ job.company }} <span  class="verified-badge"
+											title="Verified Employer" data-tippy-placement="top"></span></h4>
+									<h3 class="job-listing-title">{{ job.title }}</h3>
+									<p class="job-listing-text">{{ job.description }}</p>
+								</div>
+
+								<!-- Bookmark -->
+{#                                {% if job.id %}#}
+{#                                {% for i in job.user.user_bookmark.values %}#}
+{#                                    {% for i in i.id %}#}
+{#                                        {% if i == job.id %}#}
+{#                                            #}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                {% endfor %}#}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input id="jobid_{{ job.id }}" name="jobid" type="text" value="{{ job.id }}" hidden>
+                                {% if request.user.user_bookmark.exists %}
+                                    {% if job.id in list %}
+                                        <span id="bookmark_{{ job.id }}" onclick="UpdateStatus('{{ job.id }}')" class="bookmark-icon bookmarked"></span>
+                                    {% else %}
+                                        <span id="bookmark_{{ job.id }}" onclick="UpdateStatus('{{ job.id }}')" class="bookmark-icon"></span>
+                                    {% endif %}
+                                {% else %}
+                                    <span id="bookmark_{{ job.id }}" onclick="UpdateStatus('{{ job.id }}')" class="bookmark-icon"></span>
+                                {% endif %}
+                        </form>
+							</div>
+
+							<!-- Job Listing Footer -->
+							<div class="job-listing-footer">
+								<ul>
+									<li><i class="icon-material-outline-location-on"></i> San Francissco</li>
+									<li><i class="icon-material-outline-business-center"></i> {{ job.type }}</li>
+									<li><i class="icon-material-outline-account-balance-wallet"></i> ${{ job.min_salary }}-${{ job.max_salary }}</li>
+									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
+								</ul>
+							</div>
+						</a>
+                        {% endfor %}
+
+
+
+{#						<!-- Job Listing -->#}
+{#						<a href="../single-job-page.html" class="job-listing">#}
+{##}
+{#							<!-- Job Listing Details -->#}
+{#							<div class="job-listing-details">#}
+{#								<!-- Logo -->#}
+{#								<div class="job-listing-company-logo">#}
+{#									<img src="{% static 'images/company-logo-03.png' %}" alt="">#}
+{#								</div>#}
+{##}
+{#								<!-- Details -->#}
+{#								<div class="job-listing-description">#}
+{#									<h4 class="job-listing-company">King <span class="verified-badge"#}
+{#											title="Verified Employer" data-tippy-placement="top"></span></h4>#}
+{#									<h3 class="job-listing-title">Restaurant General Manager</h3>#}
+{#									<p class="job-listing-text">Leverage agile frameworks to provide a robust synopsis#}
+{#										for high level overviews. Iterative approaches to corporate strategy foster#}
+{#										collaborative thinking to further the overall value.</p>#}
+{#								</div>#}
+{##}
+{#								<!-- Bookmark -->#}
+{#								<span class="bookmark-icon"></span>#}
+{#							</div>#}
+{##}
+{#							<!-- Job Listing Footer -->#}
+{#							<div class="job-listing-footer">#}
+{#								<ul>#}
+{#									<li><i class="icon-material-outline-location-on"></i> San Francissco</li>#}
+{#									<li><i class="icon-material-outline-business-center"></i> Full Time</li>#}
+{#									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>#}
+{#									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>#}
+{#								</ul>#}
+{#							</div>#}
+{#						</a>#}
+
+
+						<!-- Pagination -->
+						<div class="clearfix"></div>
+						<div class="row">
+							<div class="col-md-12">
+								<!-- Pagination -->
+								<div class="pagination-container margin-top-30 margin-bottom-60">
+									<nav class="pagination">
+                                    <span class="current">
+                                                Page  {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                            </span>
+                                    <ul>
+                                            {% if page_obj.has_previous %}
+                                                <li><a href="?page=1"> 1</a></li>
+                                                <li class="pagination-arrow"><a href="?page={{ page_obj.previous_page_number }}"><i
+														class="icon-material-outline-keyboard-arrow-left"></i></a></li>
+{#                                                <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>#}
+                                            {% endif %}
+
+
+
+                                            {% if page_obj.has_next %}
+                                                <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                                                <li class="pagination-arrow"><a href="?page={{ page_obj.paginator.num_pages }}"><i
+														class="icon-material-outline-keyboard-arrow-right"></i></a></li>
+                                            {% endif %}
+{#                                    </ul>#}
+{#										<ul>#}
+{#											<li class="pagination-arrow"><a href="#"><i#}
+{#														class="icon-material-outline-keyboard-arrow-left"></i></a></li>#}
+{#											<li><a href="#">1</a></li>#}
+{#											<li><a href="#" class="current-page">2</a></li>#}
+{#											<li><a href="#">3</a></li>#}
+{#											<li><a href="#">4</a></li>#}
+{#											<li class="pagination-arrow"><a href="#"><i#}
+{#														class="icon-material-outline-keyboard-arrow-right"></i></a></li>#}
+{#										</ul>#}
+									</nav>
+								</div>
+							</div>
+						</div>
+						<!-- Pagination / End -->
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+
+    <script>
+    function UpdateStatus(id, event){
+        {#val = document.getElementById("jobid" ).value;#}
+        console.log(id);
+    $("#bookmark_"+ id).on('click', function () {
+       //make an ajax call and get status value using the same 'id'
+        var var1= document.getElementById("bookmark_" + id).className;
+        console.log(var1);
+        $.ajax({
+                type:'POST',
+                url:'{% url "bookmark" %}',
+                data:{
+                    data1:var1,
+                    data2:$('#jobid_' + id).val(),
+                    //can send multipledata like {data1:var1,data2:var2,data3:var3
+                    //can use dataType:'text/html' or 'json' if response type expected
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+
+             });
+
+    });
+$(this).unbind(event);
+}
+    </script>
+
+
+{% endblock %}

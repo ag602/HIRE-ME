@@ -1,0 +1,124 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+{% load mathfilters %}
+	<!-- Wrapper -->
+	<div id="wrap">
+
+
+		<!-- Titlebar
+================================================== -->
+		<div id="titlebar" class="gradient">
+			<div class="container">
+				<div class="row d-flex justify-content-center">
+					<div class="col-md-6">
+
+						<center><h2>Send money from Wallet to Paypal</h2></center>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+         <!-- Row -->
+					<div class="row justify-content-center">
+
+                        <!-- Dashboard Box -->
+						<div class="col-md-6">
+							<div class="dashboard-box margin-top-0 margin-bottom-30">
+                                <div class="headline">
+									<h3><i class="icon-line-awesome-lightbulb-o"></i>
+                                      <span>You need minimum 150 credits (apart from signup credits) for withdrawal.</span>
+                                        <span>Also, you cannot withdraw signup credits</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+		<!-- Content
+================================================== -->
+		<!-- Container -->
+		<div class="container">
+            <center><span style="color: red">{{ message }}</span></center>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+			<div class="row d-flex justify-content-center">
+
+
+				<!-- Summary -->
+				<div class="col-md-6 margin-top-0 margin-bottom-60">
+
+					<!-- Summary -->
+					<div class="boxed-widget summary margin-top-0">
+{#						<div class="boxed-widget-headline">#}
+{#							<h3>Summary</h3>#}
+{#						</div>#}
+						<div class="boxed-widget-inner">
+
+                                <div class="col-xl-12 col-md-12">
+                                    <div class="section-headline margin-top-25 margin-bottom-12">
+                                        <h5>Paypal id <i class="help-icon" data-tippy-placement="right"
+																title="Write your paypal email id"></i></h5>
+                                    </div>
+                                    <input name="paypal_id" class="with-border" placeholder="Paypal email id" required>
+                                </div>
+
+                                <div class="col-xl-12 col-md-12">
+                                    <div class="section-headline margin-top-25 margin-bottom-12">
+                                        <h5>Amount <i class="help-icon" data-tippy-placement="right"
+																title="Total credits available = {{ request.user.credits }}"></i></h5>
+                                    </div>
+                                    <input name="amount_in_credits" class="with-border" placeholder="Amount (in credits)" required>
+                                </div>
+
+
+						</div>
+					</div>
+
+					<!-- Summary / End -->
+					<!-- Checkbox -->
+					<div class="checkbox margin-top-30 margin-bottom-20">
+						<input type="checkbox" id="two-step" required>
+						<label for="two-step"><span class="checkbox-icon"></span>By proceeding, I agree to the <a href="#">Terms and
+								Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
+					</div>
+    {#                   <a style="float: right" href="{% url 'confirmation' %}" class="button big ripple-effect margin-top-40 margin-bottom-65">Proceed Payment</a>#}
+                    <div class="row d-flex justify-content-center">
+                    <div class="col-md-4">
+                    <button type="submit" class="button dark ripple-effect button-sliding-icon">Proceed <i
+							class="icon-feather-arrow-right"></i></button>
+                       </div>
+                    </div>
+				</div>
+
+			</div>
+                </form>
+		</div>
+		<!-- Container / End -->
+
+
+
+	</div>
+	<!-- Wrapper / End -->
+
+
+	<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+	<script>
+		// Snackbar for user status switcher
+		$('#snackbar-user-status label').click(function () {
+			Snackbar.show({
+				text: 'Your status has been changed!',
+				pos: 'bottom-center',
+				showAction: false,
+				actionText: "Dismiss",
+				duration: 3000,
+				textColor: '#fff',
+				backgroundColor: '#383838'
+			});
+		});
+	</script>
+{% endblock %}

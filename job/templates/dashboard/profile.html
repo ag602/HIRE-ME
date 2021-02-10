@@ -1,0 +1,235 @@
+{% extends 'dashboard/baseprofile.html' %}
+{% load static %}
+{% block profilecontent %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <style>
+    .bootstrap-tagsinput{
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.12)!important;
+        border:none!important;
+    }
+    .bootstrap-tagsinput .tag{
+        color: #2a41e8;
+    }
+
+    .label-info{
+        background-color: rgba(102,103,107,.07);
+        line-height: 35px;
+        font-size: 14.7px;
+        overflow: hidden;
+        max-width: 100%;
+        transition: .4s;
+        animation: KeywordIn .3s ease-in-out;
+        height: 35px;
+        margin: 0 7px 7px 0;
+        border-radius: 4px;
+    }
+    .tag{
+        padding: 7px;
+    }
+    .bootstrap-tagsinput{
+        width: 100%;
+    }
+    </style>
+			<!-- Dashboard Content
+	================================================== -->
+			<div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+
+					<!-- Dashboard Headline -->
+					<div class="dashboard-headline">
+						<h3>Dashboard</h3>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li><a href="">Dashboard</a></li>
+							</ul>
+						</nav>
+					</div>
+
+					<!-- Row -->
+					<div class="row">
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-12">
+							<div class="dashboard-box margin-top-0">
+
+								<!-- Headline -->
+								<div class="headline">
+									<div class="right-side padding-bottom-20">
+                                        <h3 style="float: left"><i class="icon-material-outline-account-circle"></i> My Account</h3>
+                                        <h3 style="float: right;"><a style="color: #333!important;" href="{% url 'profile' user.id %}"><i class="icon-line-awesome-pencil-square-o"></i>Edit</a></h3>
+                                    </div>
+                                </div>
+
+								<div class="content with-padding padding-bottom-0">
+
+									<div class="row">
+										<div class="col-auto margin-top-25">
+											<div class="avatar-wrapper" data-tippy-placement="bottom"
+												>
+												<img class="profile-pic" src="/media/{{ user.profile.pic }}"
+													alt="" />
+												<div class="upload-button"></div>
+{#												<input class="file-upload" type="file" accept="image/*" readonly>#}
+											</div>
+										</div>
+
+										<div class="col">
+											<div class="row">
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>First Name</h5>
+														<input type="text" class="with-border" value="{{ user.first_name }}" readonly>
+													</div>
+												</div>
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>Last Name</h5>
+														<input type="text" class="with-border"  value="{{ user.last_name }}" readonly>
+													</div>
+												</div>
+
+{#												<div class="col-xl-6">#}
+{#													<!-- Account Type -->#}
+{#													<div class="submit-field">#}
+{#														<h5>Account Type</h5>#}
+{#														<div class="account-type">#}
+{#															<div>#}
+{#																<input type="radio" name="account-type-radio"#}
+{#																	id="freelancer-radio" class="account-type-radio"#}
+{#																	checked />#}
+{#																<label for="freelancer-radio"#}
+{#																	class="ripple-effect-dark"><i#}
+{#																		class="icon-material-outline-account-circle"></i>#}
+{#																	Freelancer</label>#}
+{#															</div>#}
+{##}
+{#															<div>#}
+{#																<input type="radio" name="account-type-radio"#}
+{#																	id="employer-radio" class="account-type-radio" />#}
+{#																<label for="employer-radio"#}
+{#																	class="ripple-effect-dark"><i#}
+{#																		class="icon-material-outline-business-center"></i>#}
+{#																	Employer</label>#}
+{#															</div>#}
+{#														</div>#}
+{#													</div>#}
+{#												</div>#}
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>Email</h5>
+														<input type="text" class="with-border" value="{{ user }}" readonly>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-12">
+							<div class="dashboard-box">
+
+								<!-- Headline -->
+								<div class="headline">
+									<div class="right-side padding-bottom-20">
+                                        <h3 style="float: left"><i class="icon-material-outline-face"></i> My Profile</h3>
+                                        <h3 style="float: right;"><a style="color: #333!important;" href="{% url 'profile' user.id %}"><i class="icon-line-awesome-pencil-square-o"></i>Edit</a></h3>
+                                    </div>
+								</div>
+
+
+								<div class="content">
+									<ul class="fields-ul">
+										<li>
+											<div class="row">
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>Skills <i class="help-icon" data-tippy-placement="right"
+																title="Add up to 10 skills"></i></h5>
+														<!-- Skills List -->
+                                                         <input name="skills" onkeydown="return event.key == 'Enter';" style="width: 100%" type="text" value="{{ user.profile.skills }}" data-role="tagsinput" readonly disabled>
+													</div>
+											    </div>
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>Attachments</h5>
+
+														<!-- Attachments -->
+														<div class="attachments-container margin-top-0 margin-bottom-0">
+															{% for f in file %}
+															<div class="attachment-box ripple-effect">
+
+                                                                <a href="/media/{{ f.file }}">
+                                                                <span>File - {{ f.id }}</span>
+																<i>PDF</i>
+																<button class="remove-attachment"
+																	data-tippy-placement="top" title="Remove"></button>
+                                                                </a>
+															</div>
+															{% endfor %}
+														</div>
+														<div class="clearfix"></div>
+													</div>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="row">
+												<div class="col-xl-12">
+													<div class="submit-field">
+														<h5>Tagline</h5>
+														<input type="text" class="with-border"
+															value="{{ user.profile.tagline }}" readonly>
+													</div>
+												</div>
+
+
+												<div class="col-xl-12">
+													<div class="submit-field">
+														<h5>Introduce Yourself</h5>
+														<textarea cols="30" rows="5"
+															class="with-border" readonly>{{ user.profile.intro }}</textarea>
+													</div>
+												</div>
+
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+
+
+
+
+					</div>
+					<!-- Row / End -->
+
+					<!-- Footer -->
+					<div class="dashboard-footer-spacer"></div>
+
+				</div>
+			</div>
+			<!-- Dashboard Content / End -->
+
+    <script>
+    function myFunction() {
+      var element = document.getElementById("dashboard");
+      element.classList.add("active");
+    }
+    </script>
+{% endblock %}
+

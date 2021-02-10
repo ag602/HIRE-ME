@@ -1,0 +1,88 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+{% load mathfilters %}
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+
+		<!-- Titlebar
+================================================== -->
+		<div id="titlebar" class="gradient">
+			<div class="container">
+				<div class="row d-flex justify-content-center">
+					<div class="col-md-6">
+
+						<center><h2>Payment Confirmation</h2></center>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Content
+================================================== -->
+		<!-- Container -->
+		<div class="container">
+			<div class="row d-flex justify-content-center">
+
+
+				<!-- Summary -->
+				<div class="col-md-6 margin-top-0 margin-bottom-60">
+
+					<!-- Summary -->
+					<div class="boxed-widget summary margin-top-0">
+						<div class="boxed-widget-headline">
+							<h3>Summary</h3>
+						</div>
+						<div class="boxed-widget-inner ">
+							<ul>
+								<li>{{ dic.name }} <span>${{ dic.price }}.00</span></li>
+{#								<li>VAT (20%) <span>$9.80</span></li>#}
+								<li class="total-costs">Final Price <span>${{ dic.price }} </span></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Summary / End -->
+					<!-- Checkbox -->
+					<div class="checkbox margin-top-30 margin-bottom-20">
+						<input type="checkbox" id="two-step" required>
+						<label for="two-step"><span class="checkbox-icon"></span> I agree to the <a href="#">Terms and
+								Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
+					</div>
+    {#                   <a style="float: right" href="{% url 'confirmation' %}" class="button big ripple-effect margin-top-40 margin-bottom-65">Proceed Payment</a>#}
+                    <div class="row d-flex justify-content-center">
+                    <div class="col-md-4">
+                          {{ form.render }}
+                       </div>
+                    </div>
+				</div>
+
+			</div>
+		</div>
+		<!-- Container / End -->
+
+
+
+	</div>
+	<!-- Wrapper / End -->
+
+
+	<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+	<script>
+		// Snackbar for user status switcher
+		$('#snackbar-user-status label').click(function () {
+			Snackbar.show({
+				text: 'Your status has been changed!',
+				pos: 'bottom-center',
+				showAction: false,
+				actionText: "Dismiss",
+				duration: 3000,
+				textColor: '#fff',
+				backgroundColor: '#383838'
+			});
+		});
+	</script>
+{% endblock %}

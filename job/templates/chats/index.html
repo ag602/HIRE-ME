@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% load staticfiles %}
+    <style>
+    @media only screen and (min-width: 993px){
+.container{
+    width: auto!important;;
+}
+}
+    @media only screen and (min-width: 601px) {
+        .container {
+            width: auto!important;
+        }
+    }
+    .container{
+        width: auto!important;
+    }
+    nav{
+        background-color: white!important;
+    }
+    @media only screen and (min-width: 601px){
+        nav{
+            height: auto!important;
+        }
+    }
+    #navigation{
+        display: inherit;
+    }
+    </style>
+
+    {% block body %}
+
+    {% endblock %}
+
+
+{% endblock %}

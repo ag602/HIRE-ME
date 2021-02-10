@@ -1,0 +1,187 @@
+{% extends 'chats/index.html' %}
+{% load static %}
+{% block body %}
+
+      <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+{#        <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>#}
+        <script type="text/javascript" src="{% static 'js/chats.js' %}"></script>
+
+
+    <style>
+    .message-bubble.me .message-text {
+        margin-right: 0!important;
+    }
+    </style>
+    	<!-- Dashboard Headline -->
+    <div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+					<div class="dashboard-headline">
+						<h3>Messages</h3>
+{#						<span class="margin-top-7">Job Applications for <a href="#">Full Stack PHP Developer</a></span>#}
+
+						<!-- Breadcrumbs -->
+{#						<nav id="breadcrumbs" class="dark" style="background-color: #333!important;">#}
+{#							<ul>#}
+{#								<li><a href="#">Home</a></li>#}
+{#								<li><a href="{% url 'profilepage' %}">Dashboard</a></li>#}
+{#								<li>Messages</li>#}
+{#							</ul>#}
+{#						</nav>#}
+					</div>
+
+    <div class="messages-container margin-left-15 margin-right-15 margin-top-100" >
+
+						<div class="messages-container-inner">
+
+							<!-- Messages -->
+							<div class="messages-inbox">
+								<div class="messages-headline">
+									<div class="input-with-icon">
+										<input id="autocomplete-input" type="text" placeholder="Search">
+										<i class="icon-material-outline-search"></i>
+									</div>
+								</div>
+
+								<ul>
+
+                                {% for j in created %}
+                                    {% if j.applicants.all.exists %}
+                                        {% for i in j.applicants.all %}
+                                              {% if i.user.online %}
+                                            <li>
+                                            <a href="{% url 'chat' request.user.id i.user.id %}">
+                                                <div id="actives" hidden>{{ i.user.id }}</div>
+                                                <div class="message-avatar"><i  id="active_show_{{ i.user.id }}" class="status-icon status-online"></i><img
+                                                        src="/media/{{ i.user.profile.pic }}" alt="" /></div>
+                                                <div id="users" class="message-by collection">
+                                                        {{ i }}
+
+        {#												<div class="message-by-headline">#}
+        {#													<h5>Marcin Kowalski</h5>#}
+        {#													<span>2 days ago</span>#}
+        {#												</div>#}
+        {#												<p>Yes, I received payment. Thanks for cooperation!</p>#}
+                                                </div>
+                                            </a>
+                                        </li>
+                                        {% else %}
+                                            <li>
+                                            <a href="{% url 'chat' request.user.id i.user.id %}">
+                                                <div id="actives" hidden>{{ i.user.id }}</div>
+                                                <div class="message-avatar"><i  id="active_show_{{ i.user.id }}" class="status-icon"></i><img
+                                                        src="/media/{{ i.user.profile.pic }}" alt="" /></div>
+                                                <div id="users" class="message-by collection">
+                                                        {{ i }}
+
+        {#												<div class="message-by-headline">#}
+        {#													<h5>Marcin Kowalski</h5>#}
+        {#													<span>2 days ago</span>#}
+        {#												</div>#}
+        {#												<p>Yes, I received payment. Thanks for cooperation!</p>#}
+                                                </div>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+
+								</ul>
+							</div>
+							<!-- Messages / End -->
+
+							<!-- Message Content -->
+							<div class="message-content">
+
+								<div class="messages-headline">
+									<h4></h4>
+									<a href="#" class="message-action"><i class="icon-feather-trash-2"></i> Delete
+										Conversation</a>
+								</div>
+
+								<!-- Message Content Inner -->
+								<div class="message-content-inner" id="board" style="height: 55vh;overflow-y: scroll">
+{##}
+{#									<!-- Time Sign -->#}
+{#									<div class="message-time-sign">#}
+{#										<span>28 June, 2019</span>#}
+{#									</div>#}
+
+									 {% block messages %}
+
+                                     {% endblock %}
+
+								</div>
+								<!-- Message Content Inner / End -->
+
+								<!-- Reply Area -->
+{#								<div class="message-reply">#}
+{#									<textarea id="id_message"  name="message"  cols="1" rows="1" placeholder="Your Message" data-autoresize></textarea>#}
+{#									<button class="button ripple-effect">Send</button>#}
+{#								</div>#}
+                             <form id="chat-boxes" class="form-group {% block hide %}hide{% endblock %}" method="post">
+                                {% csrf_token %}
+                                <div class="row message-reply">
+{#                                     <input id="id_message"  name="message" type="text" placeholder="Your Message" data-autoresize>#}
+                                    <div class="col-xl-8"><input  id="id_message" name="message" placeholder="Your Message" data-autoresize></div>
+                                    <div class="col-xl-4"><button  class="button ripple-effect">Send</button></div>
+
+                                </div>
+
+            </form>
+
+							</div>
+							<!-- Message Content -->
+
+						</div>
+					</div>
+					<!-- Messages Container / End -->
+                </div>
+    </div>
+
+
+    <script>
+    console.log(document.getElementById("active").innerHTML)
+    {#var i = document.getElementById("active").innerHTML;#}
+    {#console.log(i)#}
+    {#$(document).ready(function(){#}
+    {#    $("#active_show").addClass("status-online");#}
+    {#});#}
+    {#if( i === 'True' ){#}
+    {#    document.getElementById("active_show").classList.add("status-online")#}
+    {#    $("#active_show").addClass("status-online");#}
+    {#}#}
+    {#else{#}
+    {#    document.getElementById("active_show").classList.add("status-offline")#}
+    {#    $("#active_show").addClass("status-offline");#}
+    {#}#}
+</script>
+    <script>
+        // For receiving
+        sender_id = "{{ receiver.id }}";
+        receiver_id = "{{ request.user.id }}";
+
+        //For sending
+        $(function () {
+            scrolltoend();
+            $('#chat-boxes').on('submit', function (event) {
+                event.preventDefault();
+                var message = $('#id_message');
+                send('{{ request.user.username }}', '{{ receiver.username }}', message.val());
+                message.val('');
+            });
+            //setInterval(() => {
+                //getUsers({{ request.user.id }}, doc => {
+                    //let list = '';
+                    //doc.map(userItem => {
+                    //    list += userItem
+                   // });
+                   // $('#users').html(list)
+               // });
+           // }, 1000)
+        })
+    </script>
+
+
+{% endblock %}

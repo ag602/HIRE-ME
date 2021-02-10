@@ -1,0 +1,295 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+	<!-- Wrapper -->
+
+
+	<div id="wrap">
+
+
+		<!-- Titlebar
+================================================== -->
+		<div id="titlebar" class="gradient">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<h2>Checkout</h2>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li><a href="#">Pricing Plans</a></li>
+								<li>Checkout</li>
+							</ul>
+						</nav>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Content
+================================================== -->
+		<!-- Container -->
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-8 col-lg-8 content-right-offset">
+
+
+					<!-- Hedaline -->
+					<h3>Billing Cycle</h3>
+                    <span id="messages" hidden>{{ title }}</span>
+                    <span id="discounts" hidden>{{ coupons.disc }}</span>
+
+
+					<!-- Billing Cycle Radios  -->
+					<div class="billing-cycle margin-top-25">
+
+						<!-- Radio -->
+						<div class="radio">
+							<input id="monthly" name="radio-payment-type" type="radio" value="Yes">
+							<label for="monthly">
+								<span class="radio-label"></span>
+								Billed Monthly
+								<span class="billing-cycle-details">
+									<span class="regular-price-tag">$49.00 / month</span>
+								</span>
+							</label>
+						</div>
+
+						<!-- Radio -->
+						<div class="radio">
+							<input id="yearly" name="radio-payment-type" type="radio" value="No">
+							<label for="yearly"><span class="radio-label"></span>
+								Billed Yearly
+								<span class="billing-cycle-details">
+									<span class="discounted-price-tag">$529.20 / year</span>
+									<span class="regular-price-tag line-through">588.00 / year</span>
+								</span>
+							</label>
+						</div>
+					</div>
+
+					<!-- Hedline -->
+					<h3 class="margin-top-50">Payment Method</h3>
+
+					<!-- Payment Methods Accordion -->
+					<div class="payment margin-top-30 margin-bottom-65">
+
+						<div class="payment-tab payment-tab-active">
+							<div class="payment-tab-trigger">
+								<input checked id="paypal" name="cardType" type="radio" value="paypal">
+								<label for="paypal">PayPal</label>
+								<img class="payment-logo paypal" src="https://i.imgur.com/ApBxkXU.png" alt="">
+							</div>
+
+							<div class="payment-tab-content">
+								<p>You will be redirected to PayPal to complete payment.</p>
+							</div>
+						</div>
+
+
+						<div class="payment-tab">
+							<div class="payment-tab-trigger">
+								<input type="radio" name="cardType" id="creditCart" value="creditCard">
+								<label for="creditCart">Credit / Debit Card</label>
+								<img class="payment-logo" src="https://i.imgur.com/IHEKLgm.png" alt="">
+							</div>
+
+							<div class="payment-tab-content">
+								<div class="row payment-form-row">
+
+									<div class="col-md-6">
+										<div class="card-label">
+											<input id="nameOnCard" name="nameOnCard" required type="text"
+												placeholder="Cardholder Name">
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="card-label">
+											<input id="cardNumber" name="cardNumber" placeholder="Credit Card Number"
+												required type="text">
+										</div>
+									</div>
+
+									<div class="col-md-4">
+										<div class="card-label">
+											<input id="expiryDate" placeholder="Expiry Month" required type="text">
+										</div>
+									</div>
+
+									<div class="col-md-4">
+										<div class="card-label">
+											<label for="expiryDate">Expiry Year</label>
+											<input id="expirynDate" placeholder="Expiry Year" required type="text">
+										</div>
+									</div>
+
+									<div class="col-md-4 ">
+										<div class="card-label">
+											<input id="cvv" required type="text" placeholder="CVV">
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- Payment Methods Accordion / End -->
+
+
+{# <div class="col-md-6">#}
+{#                    {{ form.render }}#}
+{##}
+{#                </div>#}
+                </div>
+
+
+
+
+				<!-- Summary -->
+				<div class="col-xl-4 col-lg-4 margin-top-0 margin-bottom-60">
+
+					<!-- Summary -->
+					<div class="boxed-widget summary margin-top-0">
+						<div class="boxed-widget-headline">
+							<h3>Summary</h3>
+						</div>
+
+						<div class="boxed-widget-inner ">
+							<ul>
+								<li>Standard Plan <span id="price">$49.00</span></li>
+								<li>VAT (20%) <span id="vat">$9.80</span></li>
+                                <li id="disc">Dicsount (- {{ coupons.disc }}%) <span id="discount" style="color: #449626"></span></li>
+								<li class="total-costs">Final Price <span id="total">$58.80</span></li>
+							</ul>
+						</div>
+					</div>
+                    <span id="discount_hidden" hidden>{{ coupons.disc }}</span>
+{#                    <span id="coupon_name"></span>#}
+                    <p class="margin-top-20" style="color: red">{{ message }}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                    <div class="row coupon margin-top-40">
+                        <div class="col-lg-6">
+                            <input class="with-border" name="coupon" type="text" id="coupon" value="{{ coupons.coup }}">
+                        </div>
+                        <div class="col-lg-6">
+                    <button id="coupon_apply" name="coupon_apply" type="submit" style="float: right;background-color: #449626" class="button small ripple-effect">Apply Coupon</button>
+                        </div>
+                    </div>
+                    </form>
+
+
+					<!-- Summary / End -->
+
+					<!-- Checkbox -->
+                    <form class="main" action="{% url 'make_payment' %}" method="post">
+                        {% csrf_token %}
+					<div class="checkbox margin-top-30 margin-bottom-20">
+						<input type="checkbox" id="two-step" required>
+						<label for="two-step"><span class="checkbox-icon"></span> I agree to the <a href="#">Terms and
+								Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
+                        <input name="plan" type="text" id="plan"  hidden>
+                        <input name="total_price" type="text" id="total_price"  hidden>
+                        <input type="text" name="coupon_send" id="coupon_send" value="{{ coupons.coup }}">
+					</div>
+                    <button type="submit" name="pay" class="button big ripple-effect margin-top-20 margin-bottom-65">Proceed Payment</button>
+                    </form>
+				</div>
+			</div>
+		</div>
+		<!-- Container / End -->
+
+
+	</div>
+	<!-- Wrapper / End -->
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+    <script>
+ if(document.getElementById("discounts").innerHTML===""){
+     $('input:radio[name="radio-payment-type"]').change(function () {
+    if ($(this).val() === 'Yes') {
+        document.getElementById("plan").value = "monthly";
+        document.getElementById("price").innerHTML = "$49.00";
+        document.getElementById("vat").innerHTML = "$9.80";
+        document.getElementById("discount").innerHTML = '- $0';
+        document.getElementById("total").innerHTML = "$58.80";
+        {#console.log(document.getElementById("plan").value)#}
+        document.getElementById("total_price").value = document.getElementById("total").innerHTML
+    } else {
+        document.getElementById("plan").value = "yearly";
+        document.getElementById("price").innerHTML = "$529.20";
+        document.getElementById("vat").innerHTML = "$105.84";
+        {#document.getElementById("discount").innerHTML = '- $'.concat(Math.round(529*0.200));#}
+        document.getElementById("discount").innerHTML = '- $0';
+        document.getElementById("total").innerHTML = "$635.04";
+        {#console.log(document.getElementById("plan").value)#}
+        document.getElementById("total_price").value = document.getElementById("total").innerHTML
+    }
+ });
+}
+
+ else{
+     disc = document.getElementById("discounts").innerHTML;
+     var discount = parseInt(disc, 10);
+     $('input:radio[name="radio-payment-type"]').change(function () {
+    if ($(this).val() === 'Yes') {
+        document.getElementById("plan").value = "monthly";
+        document.getElementById("price").innerHTML = "$49.00";
+        const price = 49.00;
+        const vat = 9.80;
+        document.getElementById("vat").innerHTML = "$9.80";
+        const discnt = discount/100 * 49.00;
+        document.getElementById("discount").innerHTML = '- $'.concat(discnt);
+        document.getElementById("total").innerHTML = "$".concat(Math.round(58.80 - price*disc/100));
+        document.getElementById("total_price").value = document.getElementById("total").innerHTML
+        {#console.log(document.getElementById("plan").value)#}
+    } else {
+         document.getElementById("plan").value = "monthly";
+        document.getElementById("price").innerHTML = "$529.20";
+        const price = 529.20;
+        const vat = 105.84;
+        document.getElementById("vat").innerHTML = "105.84";
+        const discnt = discount/100 * 529.20;
+        document.getElementById("discount").innerHTML = '- $'.concat(discnt);
+        document.getElementById("total").innerHTML = "$".concat(Math.round(529.20 - price*disc/100));
+        document.getElementById("total_price").value = document.getElementById("total").innerHTML
+        {#console.log(document.getElementById("plan").value)#}
+    }
+});
+ }
+
+    </script>
+
+
+
+	<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+	<script type="text/javascript">
+    $(document).ready(function() {
+		// Snackbar for user status switcher
+        if(document.getElementById("messages").innerHTML === ''){
+            console.log("failed")
+        }
+        else{
+			Snackbar.show({
+				text: document.getElementById("messages").innerHTML,
+				pos: 'top-center',
+				showAction: false,
+				actionText: "Dismiss",
+				duration: 3000,
+				textColor: '#fff',
+				backgroundColor: '#383838'
+			});
+        }
+
+		});
+	</script>
+{% endblock %}

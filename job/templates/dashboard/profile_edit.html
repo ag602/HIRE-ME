@@ -1,0 +1,286 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+    <style>
+    .bootstrap-tagsinput{
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.12)!important;
+        border:none!important;
+    }
+    .bootstrap-tagsinput .tag{
+        color: #2a41e8;
+    }
+
+    .label-info{
+        background-color: rgba(102,103,107,.07);
+        line-height: 35px;
+        font-size: 14.7px;
+        overflow: hidden;
+        max-width: 100%;
+        transition: .4s;
+        animation: KeywordIn .3s ease-in-out;
+        height: 35px;
+        margin: 0 7px 7px 0;
+        border-radius: 4px;
+    }
+    .tag{
+        padding: 7px;
+    }
+    .bootstrap-tagsinput{
+        width: 100%;
+    }
+    </style>
+		<!-- Dashboard Container -->
+		<div class="dashboard-container">
+			<!-- Dashboard Content
+	================================================== -->
+			<div class="dashboard-content-container" data-simplebar>
+				<form class="dashboard-content-inner"  method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                        <div class="section-headline centered margin-bottom-50">
+							<h3>Profile</h3>
+						</div>
+
+                <!-- Row -->
+					<div class="row justify-content-center">
+
+                        <!-- Dashboard Box -->
+						<div class="col-xl-10">
+							<div class="dashboard-box margin-top-0 margin-bottom-30">
+                                <div class="headline">
+									<h3><i class="icon-line-awesome-lightbulb-o"></i>
+                                     Increase the chances of your selection by updating your profile. Update your profile now!
+                                    </h3>
+
+                                <div class="content">
+
+                                </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<!-- Row -->
+					<div class="row justify-content-center">
+
+                        <!-- Dashboard Box -->
+						<div class="col-xl-10">
+							<div class="dashboard-box margin-top-0">
+
+								<!-- Headline -->
+								<div class="headline">
+									<h3><i class="icon-material-outline-account-circle"></i> My Account</h3>
+								</div>
+
+								<div class="content with-padding padding-bottom-0">
+
+									<div class="row">
+
+										<div class="col-auto">
+											<div class="avatar-wrapper" data-tippy-placement="bottom"
+												title="Upload/update your pic">
+												<img class="profile-pic" src="/media/{{ domain }}{{ user.profile.pic }}"
+													alt="" />
+												<div class="upload-button"></div>
+												{{ profile_form.pic }}
+											</div>
+										</div>
+
+										<div class="col">
+											<div class="row">
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>First Name</h5>
+                                                        {{ user_form.first_name }}
+{#														<input type="text" class="with-border" value="" >#}
+													</div>
+												</div>
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>Last Name</h5>
+                                                        {{ user_form.last_name }}
+{#														<input type="text" class="with-border" value="{{ user.last_name }}" >#}
+													</div>
+												</div>
+
+
+
+												<div class="col-xl-6">
+													<div class="submit-field">
+														<h5>Email</h5>
+                                                        {{ user_form.email }}
+{#														<input type="text" class="with-border" value="{{ user.username }}" >#}
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-10 justify-content-center">
+							<div class="dashboard-box">
+
+								<!-- Headline -->
+								<div class="headline">
+									<h3><i class="icon-material-outline-face"></i> My Profile</h3>
+								</div>
+
+								<div class="content">
+									<ul class="fields-ul">
+
+										<li>
+											<div class="row">
+												<div class="col-xl-12">
+													<div class="submit-field">
+														<h5>Skills <i class="help-icon" data-tippy-placement="right"
+																title="Add up to 10 skills"></i></h5>
+														<!-- Skills List -->
+{#                                                         <input name="skills" onkeydown="return event.key == 'Enter';" style="width: 100%" type="text" value="HTML5, CSS3, Javascript" data-role="tagsinput" >#}
+                                                            {{ profile_form.skills }}
+													</div>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="row">
+												<div class="col-xl-12">
+													<div class="submit-field">
+														<h5>Tagline</h5>
+                                                        {{ profile_form.tagline }}
+{#														<input type="text" class="with-border"#}
+{#															value="">#}
+													</div>
+												</div>
+												<div class="col-xl-12">
+													<div class="submit-field">
+														<h5>Introduce Yourself</h5>
+                                                        {{ profile_form.intro }}
+{#														<textarea cols="30" rows="5"#}
+{#															class="with-border"></textarea>#}
+													</div>
+												</div>
+
+                                                <div class="col-lg-6">
+													<div class="submit-field">
+														<h5>Attachments</h5>
+
+														<!-- Attachments -->
+														<div class="attachments-container margin-top-0 margin-bottom-0">
+                                                            {% for f in file %}
+															<div class="attachment-box ripple-effect">
+
+                                                                <a href="/media/{{ f.file }}">
+                                                                <span>File - {{ f.id }}</span>
+																<i>PDF</i>
+																<button class="remove-attachment"
+																	data-tippy-placement="top" title="Remove"></button>
+                                                                </a>
+															</div>
+															{% endfor %}
+														</div>
+														<div class="clearfix"></div>
+
+														<!-- Upload Button -->
+														<div class="uploadButton margin-top-0">
+{#                                                            {{ file_form.file }}#}
+															<input class="uploadButton-input" type="file" name="file"
+																accept="image/*, application/pdf" id="upload"
+																multiple />
+															<label class="uploadButton-button ripple-effect"
+																for="upload">Upload Files</label>
+															<span class="uploadButton-file-name">Maximum file size: 10
+																MB</span>
+														</div>
+
+													</div>
+												</div>
+
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<!-- Button -->
+						<div class="col-xl-10">
+							<button class="button ripple-effect big margin-top-30" type="submit">Save Changes</button>
+						</div>
+
+					</div>
+					<!-- Row / End -->
+
+					<!-- Footer -->
+					<div class="dashboard-footer-spacer"></div>
+
+					<!-- Footer / End -->
+                </form>
+				</div>
+			</div>
+			<!-- Dashboard Content / End -->
+
+		<!-- Dashboard Container / End -->
+
+	<!-- Google Autocomplete -->
+	<script>
+		function initAutocomplete() {
+			var options = {
+				types: ['(cities)'],
+				// componentRestrictions: {country: "us"}
+			};
+
+			var input = document.getElementById('autocomplete-input');
+			var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+			if ($('.submit-field')[0]) {
+				setTimeout(function () {
+					$(".pac-container").prependTo("#autocomplete-container");
+				}, 300);
+			}
+		}
+	</script>
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+   var referrer =  document.referrer;
+   console.log(referrer);
+   if(referrer=== 'http://127.0.0.1:8000/login/' || referrer === location.protocol + "//" + location.hostname +'/login/'
+   || referrer === location.protocol + "//" + location.hostname +'/signup/dat' || referrer=== 'http://127.0.0.1:8000/signup/dat'
+   || referrer === 'http://127.0.0.1:8000/complete/google-oauth2/' || referrer === ''){
+       Snackbar.show({
+            text: 'You have successfully logged in! 100 credits have been credited to your account',
+            pos: 'top-center',
+            showAction: true,
+            actionText: "Dismiss",
+            duration: 6000,
+            textColor: '#fff',
+            backgroundColor: '#383838',
+            actionTextColor: '#43a047',
+
+        });
+   }
+});
+
+    </script>
+    <script>
+    {#var x = document.getElementsByName("email")#}
+    {#x.readOnly = true#}
+    $('[name="email"]').prop('readonly', true);
+
+
+    </script>
+{% endblock %}

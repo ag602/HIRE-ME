@@ -1,0 +1,477 @@
+{% extends 'dashboard/baseprofile.html' %}
+{% load static %}
+{% block profilecontent %}
+{#  RATING JS USED - http://auxiliary.github.io/rater/#}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/snackbarjs/1.1.0/snackbar.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/snackbarjs/1.1.0/snackbar.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="{% static 'js/rater.js' %}"></script>
+
+
+    <style>
+    .tags-container input[type=checkbox]:checked+label{
+        background-color: #38b653;
+    }
+    .tags-container input[type=checkbox]+label{
+        line-height: 20.5px;
+    }
+    </style>
+<!-- Dashboard Content
+================================================== -->
+<div class="dashboard-content-container" data-simplebar>
+    <div class="dashboard-content-inner">
+
+    <!-- Dashboard Headline -->
+    <div class="dashboard-headline">
+        <h3>Manage Candidates</h3>
+{#						<span class="margin-top-7">Job Applications for <a href="#">Full Stack PHP Developer</a></span>#}
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs" class="dark">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Dashboard</a></li>
+                <li>Manage Candidates</li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Row -->
+    <div class="row">
+
+        <!-- Dashboard Box -->
+        <div class="col-xl-12">
+            <div class="dashboard-box margin-top-0">
+
+                <!-- Headline -->
+                <div class="headline">
+                    <h3><i class="icon-material-outline-supervisor-account"></i> Candidates</h3>
+                </div>
+
+                <div class="content">
+                    <ul class="dashboard-box-list">
+                        {% for item in created %}
+                            {% for i in item.applicants.all %}
+{#                                {% if item.is_approved %}#}
+                                  {% if i.is_accepted %}
+<!----------------------------------------------IF JOB APPROVED-------------------------------------------------->
+                                   <li>
+                            <!-- Overview -->
+                            <div class="freelancer-overview manage-candidates">
+                                <div class="freelancer-overview-inner">
+
+                                    <!-- Avatar -->
+                                    <div class="header-image freelancer-avatar">
+                                        <div class="verified-badge"></div>
+                                        <a href="#"><img style="height: 90px" src="/media/{{ i.user.profile.pic }}" alt=""></a>
+                                    </div>
+
+                                    <!-- Name -->
+                                    <div class="freelancer-name">
+                                        <h4><a href="{% url 'seefreelancer' i.user.id %}">{{ i.user.first_name }} {{ i.user.last_name }} <img class="flag"
+                                                    src="{% static 'images/flags/au.svg' %}" alt="" title="Australia"
+                                                    data-tippy-placement="top"></a></h4>
+
+                                        <!-- Details -->
+{#														<span class="freelancer-detail-item"><a href="#"><i#}
+{#																	class="icon-feather-mail"></i> <span#}
+{#																	class="__cf_email__"#}
+{#																	data-cfemail="780b11161c01381d00191508141d561b1715">[email&#160;protected]</span></a></span>#}
+                                        <span class="freelancer-detail-item"><a href="{% url 'jobpage' i.job.id %}"><i
+                                                    class="icon-material-outline-assignment"></i> <span
+                                                    >{{ i.job }}</span></a></span>
+{#														<span class="freelancer-detail-item"><i#}
+{#																class="icon-feather-phone"></i> (+61) 123-456-789</span>#}
+
+                                        <!-- Rating -->
+                                        <div class="freelancer-rating">
+                                            <div class="star-rating" data-rating="4.0"></div>
+
+                                        </div>
+
+                                        <!-- Buttons -->
+                                        <div
+                                            class="buttons-to-right always-visible margin-top-25 margin-bottom-5">
+{#															<a href="/media/{{ i.user.applicant }}" class="button ripple-effect"><i#}
+{#																	class="icon-feather-file-text"></i> Download CV</a>#}
+                                            <a href="{% url 'chat' user.id i.user.id  %}"
+                                                class="button dark ripple-effect"><i
+                                                    class="icon-feather-mail"></i> Send Message</a>
+                                            <a style="background-color:#38b653" href="#"
+                                                class="popup-with-zoom-anim button ripple-effect"><i
+                                                    class="icon-material-outline-check"></i> Already accepted</a>
+                                            <a href="#small-dialog-2_{{ i.user.id }}" class="button gray ripple-effect ico"
+                                                title="Remove Candidate" data-tippy-placement="top"><i
+                                                    class="icon-feather-trash-2"></i></a>
+                                            <a class="tags-container">
+{#                                                            <div class="tag">#}
+                                                {% if i.job.is_completed %}
+                                                     <a href="#"
+                                                    class="popup-with-zoom-anim button ripple-effect" style="background-color: #38b653"><i
+                                                    class="icon-material-outline-check"></i> Marked as Completed</a>
+                                                    <a href="#small-dialog-4-{{ i.user.id }}"
+                                                    class="popup-with-zoom-anim button ripple-effect"><i
+                                                    class="icon-material-outline-rate-review"></i> Leave a review</a>
+                                                    {% else %}
+                                                     <a href="#small-dialog-3{{ i.job.id }}"
+                                                    class="popup-with-zoom-anim button ripple-effect"><i
+                                                    class="icon-material-outline-check"></i> Mark as Completed</a>
+                                                    {% endif %}
+
+{#                                                            </div>#}
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            <!-- Bid Acceptance Popup================================================== -->
+            <div id="small-dialog-3{{ i.job.id }}" class="justify-content-center zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+                <!--Tabs -->
+                <div class="sign-in-form">
+
+                    <ul class="popup-tabs-nav">
+                        <li><a href="#tab1">Mark as Completed</a></li>
+                    </ul>
+
+                    <div class="popup-tabs-container" style="background-color: white">
+
+                        <!-- Tab -->
+                        <div class="popup-tab-content" id="tab">
+
+                            <!-- Welcome Text -->
+                            <div class="welcome-text">
+                                <h3>Mark {{ i.user.first_name }} {{ i.user.last_name }}'s Work as Completed</h3>
+                                <h4>{{ i.job }}</h4>
+                                <div class="bid-acceptance margin-top-15">
+                                    ${{ item.min_salary }} - ${{ item.max_salary }}
+                                </div>
+
+                            </div>
+
+                            <form id="completed" method="post">
+                                {% csrf_token %}
+                                <label for="job">Job offer for:</label>
+                                <p><strong>{{ i.job }}</strong></p>
+                                <input type="text" name="accept" value="{{ i.job.id }}" hidden>
+                                <input type="text" name="user" value="{{ i.user.id }}" hidden>
+                                <button name="completed" class="margin-top-15 button full-width button-sliding-icon ripple-effect" type="submit"
+                                form="completed">Submit <i class="icon-material-outline-arrow-right-alt"></i></button>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Bid Acceptance Popup / End -->
+             	<!-- Leave a Review for Freelancer Popup
+================================================== -->
+	<div id="small-dialog-4-{{ i.user.id }}" style="background-color: white" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+		<!--Tabs -->
+		<div class="sign-in-form">
+
+			<ul class="popup-tabs-nav">
+			</ul>
+
+			<div class="popup-tabs-container">
+
+				<!-- Tab -->
+				<div class="popup-tab-content" id="tab2">
+
+					<!-- Welcome Text -->
+					<div class="welcome-text">
+						<h3>Leave a Review</h3>
+						<span>Rate <a href="{% url 'seefreelancer' i.user.id %}">{{ i.user.first_name }} {{ i.user.last_name }}</a> for the project <a href="{% url 'jobpage' i.job.id %}">{{ i.job }}</a> </span>
+					</div>
+
+					<!-- Form -->
+					<form method="post" id="leave-review-form">
+                        {% csrf_token %}
+                                <input type="text" name="accept_review" value="{{ i.job.id }}" hidden>
+                                <input type="text" name="user_review" value="{{ i.user.id }}" hidden>
+						<div class="feedback-yes-no">
+							<strong>Was this project delivered on budget?</strong>
+							<div class="radio">
+								<input id="radio-1" value="yes" name="on_budget" type="radio" required>
+								<label for="radio-1"><span class="radio-label"></span> Yes</label>
+							</div>
+
+							<div class="radio">
+								<input id="radio-2" value="no" name="on_budget" type="radio" required>
+								<label for="radio-2"><span class="radio-label"></span> No</label>
+							</div>
+						</div>
+
+						<div class="feedback-yes-no">
+							<strong>Was this project delivered on time?</strong>
+							<div class="radio">
+								<input id="radio-3" value="yes" name="on_time" type="radio" required>
+								<label for="radio-3"><span class="radio-label"></span> Yes</label>
+							</div>
+
+							<div class="radio">
+								<input id="radio-4" value="no" name="on_time" type="radio" required>
+								<label for="radio-4"><span class="radio-label"></span> No</label>
+							</div>
+						</div>
+
+						<div class="feedback-yes-no">
+							<strong>Your Rating</strong>
+							<div class="leave-rating" >
+                             <div style="font-size: 28px;color: #febe42" class="rating"></div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+                        <input type="number" name="rating" id="rating" hidden>
+
+						<textarea class="with-border" placeholder="Comment"  name="review" id="message2" cols="7"
+							required></textarea>
+                        <!-- Button -->
+					<button name="reviews" class="button full-width button-sliding-icon ripple-effect" type="submit"
+						form="leave-review-form">Leave a Review <i
+							class="icon-material-outline-arrow-right-alt"></i></button>
+
+					</form>
+
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Leave a Review Popup / End -->
+                                   <!-- EDIT THE Review for Freelancer Popup
+================================================== -->
+	<div id="small-dialog-4-{{ i.user.id }}" style="background-color: white" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+		<!--Tabs -->
+		<div class="sign-in-form">
+
+			<ul class="popup-tabs-nav">
+			</ul>
+
+			<div class="popup-tabs-container">
+
+				<!-- Tab -->
+				<div class="popup-tab-content" id="tab2">
+
+					<!-- Welcome Text -->
+					<div class="welcome-text">
+						<h3>Leave a Review</h3>
+						<span>Rate <a href="{% url 'seefreelancer' i.user.id %}">{{ i.user.first_name }} {{ i.user.last_name }}</a> for the project <a href="{% url 'jobpage' i.job.id %}">{{ i.job }}</a> </span>
+					</div>
+
+					<!-- Form -->
+					<form method="post" id="leave-review-form">
+                        {% csrf_token %}
+                                <input type="text" name="accept_review" value="{{ i.job.id }}" hidden>
+                                <input type="text" name="user_review" value="{{ i.user.id }}" hidden>
+						<div class="feedback-yes-no">
+							<strong>Was this project delivered on budget?</strong>
+							<div class="radio">
+								<input id="radio-1" value="yes" name="on_budget" type="radio" required>
+								<label for="radio-1"><span class="radio-label"></span> Yes</label>
+							</div>
+
+							<div class="radio">
+								<input id="radio-2" value="no" name="on_budget" type="radio" required>
+								<label for="radio-2"><span class="radio-label"></span> No</label>
+							</div>
+						</div>
+
+						<div class="feedback-yes-no">
+							<strong>Was this project delivered on time?</strong>
+							<div class="radio">
+								<input id="radio-3" value="yes" name="on_time" type="radio" required>
+								<label for="radio-3"><span class="radio-label"></span> Yes</label>
+							</div>
+
+							<div class="radio">
+								<input id="radio-4" value="no" name="on_time" type="radio" required>
+								<label for="radio-4"><span class="radio-label"></span> No</label>
+							</div>
+						</div>
+
+						<div class="feedback-yes-no">
+							<strong>Your Rating</strong>
+							<div class="leave-rating" >
+                             <div style="font-size: 28px;color: #febe42" class="rating"></div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+                        <input type="number" name="rating" id="rating" hidden>
+
+						<textarea class="with-border" placeholder="Comment"  name="review" id="message2" cols="7"
+							required></textarea>
+                        <!-- Button -->
+					<button name="reviews" class="button full-width button-sliding-icon ripple-effect" type="submit"
+						form="leave-review-form">Leave a Review <i
+							class="icon-material-outline-arrow-right-alt"></i></button>
+
+					</form>
+
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- EDIT THE Review Popup / End -->
+
+                        </li>
+
+
+<!----------------------------------------------IF JOB NOT APPROVED-------------------------------------------------->
+
+                                   {% else %}
+                                   <li>
+                            <!-- Overview -->
+                            <div class="freelancer-overview manage-candidates">
+                                <div class="freelancer-overview-inner">
+
+                                    <!-- Avatar -->
+                                    <div class="header-image freelancer-avatar">
+                                        <div class="verified-badge"></div>
+                                        <a href="#"><img style="height: 90px" src="/media/{{ i.user.profile.pic }}" alt=""></a>
+                                    </div>
+
+                                    <!-- Name -->
+                                    <div class="freelancer-name">
+                                        <h4><a href="{% url 'seefreelancer' i.user.id %}">{{ i.user.first_name }} {{ i.user.last_name }} <img class="flag"
+                                                    src="{% static 'images/flags/au.svg' %}" alt="" title="Australia"
+                                                    data-tippy-placement="top"></a></h4>
+
+                                        <!-- Details -->
+{#														<span class="freelancer-detail-item"><a href="#"><i#}
+{#																	class="icon-feather-mail"></i> <span#}
+{#																	class="__cf_email__"#}
+{#																	data-cfemail="780b11161c01381d00191508141d561b1715">[email&#160;protected]</span></a></span>#}
+                                        <span class="freelancer-detail-item"><a href="#"><i
+                                                    class="icon-material-outline-assignment"></i> <span
+                                                    >{{ i.job }}</span></a></span>
+{#														<span class="freelancer-detail-item"><i#}
+{#																class="icon-feather-phone"></i> (+61) 123-456-789</span>#}
+
+                                        <!-- Rating -->
+                                        <div class="freelancer-rating">
+                                            <div class="star-rating" data-rating="4.0"></div>
+                                        </div>
+
+
+{#                                                        <span class="star fa-star"></span>#}
+                                        <!-- Buttons -->
+                                        <div
+                                            class="buttons-to-right always-visible margin-top-25 margin-bottom-5">
+{#															<a href="/media/{{ i.user.applicant }}" class="button ripple-effect"><i#}
+{#																	class="icon-feather-file-text"></i> Download CV</a>#}
+                                            <a href="{% url 'chat' request.user.id i.user.id  %}"
+                                                class="button dark ripple-effect"><i
+                                                    class="icon-feather-mail"></i> Send Message</a>
+                                            <a href="#small-dialog-2-{{ i.user.id }}"
+                                                class="popup-with-zoom-anim button ripple-effect"><i
+                                                    class="icon-material-outline-check"></i> Accept
+                                                Candidate</a>
+                                            <a href="#small-dialog-5{{ i.user.id }}" class="button gray ripple-effect ico"
+                                                title="Remove Candidate" data-tippy-placement="top"><i
+                                                    class="icon-feather-trash-2"></i></a>
+                                        </div>
+                                    </div>
+
+
+                                         <!-- Bid Acceptance Popup================================================== -->
+                            <div id="small-dialog-2-{{ i.user.id }}" class="justify-content-center zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+                                <!--Tabs -->
+                                <div class="sign-in-form">
+
+                                    <ul class="popup-tabs-nav">
+                                        <li><a href="#tab1">Accept Candidate</a></li>
+                                    </ul>
+
+                                    <div class="popup-tabs-container" style="background-color: white">
+
+                                        <!-- Tab -->
+                                        <div class="popup-tab-content" id="tab">
+
+                                            <!-- Welcome Text -->
+                                            <div class="welcome-text">
+                                                <h3>Accept {{ i.user.first_name }} {{ i.user.last_name }}'s Offer</h3>
+                                                <h4>{{ i.job }}</h4>
+                                                <div class="bid-acceptance margin-top-15">
+                                                    ${{ item.min_salary }} - ${{ item.max_salary }}
+                                                </div>
+
+                                            </div>
+
+                                            <form id="terms" method="post">
+                                                {% csrf_token %}
+                                                <label for="job">Job offer for:</label>
+                                                <p><strong>{{ i.job }}</strong></p>
+                                                <input type="text" name="accept" value="{{ i.job.id }}" hidden>
+                                                <input type="text" name="user" value="{{ i.user.id }}" hidden>
+
+                                            <button name="accepted" class="margin-top-15 button full-width button-sliding-icon ripple-effect" type="submit"
+                                                form="terms">Accept <i class="icon-material-outline-arrow-right-alt"></i></button>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bid Acceptance Popup / End -->
+
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+<!--------------------------------------------------END IF------------------------------------------------------->
+
+
+
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Row / End -->
+
+        <!-- Footer -->
+        <div class="dashboard-footer-spacer"></div>
+
+
+    </div>
+</div>
+
+<!-- Dashboard Content / End -->
+
+    <script>
+    $(".rating").on("change", function(ev, data){
+        document.getElementById("rating").value = data.to
+    console.log(data.to);
+        console.log(document.getElementById("rating").value)
+});
+    </script>
+        <script>
+$(".rating").rate();
+
+//or for example
+var options = {
+    max_value: 5,
+    step_size: 0.5,
+    initial_value: 0,
+}
+$(".rating").rate(options);
+</script>
+
+{% endblock %}

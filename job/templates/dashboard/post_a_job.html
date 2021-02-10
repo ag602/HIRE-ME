@@ -1,0 +1,279 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+     <style>
+    .bootstrap-tagsinput{
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.05);
+        border: 1px solid #e0e0e0;
+    }
+    .bootstrap-tagsinput .tag{
+        color: #2a41e8;
+    }
+
+    .label-info{
+        background-color: rgba(102,103,107,.07);
+        line-height: 35px;
+        font-size: 14.7px;
+        overflow: hidden;
+        max-width: 100%;
+        transition: .4s;
+        animation: KeywordIn .3s ease-in-out;
+        height: 35px;
+        margin: 0 7px 7px 0;
+        border-radius: 4px;
+    }
+    .tag{
+        padding: 7px;
+    }
+    .bootstrap-tagsinput{
+        width: 100%;
+    }
+    </style>
+		<!-- Dashboard Container -->
+		<div class="dashboard-container">
+
+        <span id="snack_post" hidden>{{ message }}</span>
+
+
+			<!-- Dashboard Content
+	================================================== -->
+			<div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+
+					<!-- Dashboard Headline -->
+					<div class="dashboard-headline">
+						<h3>Post a Job</h3>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="/">Home</a></li>
+								<li><a href="{% url 'profile' user.id %}">Dashboard</a></li>
+								<li>Post a Job</li>
+							</ul>
+						</nav>
+					</div>
+
+					<!-- Row -->
+					<div class="row justify-content-center">
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-10">
+							<div class="dashboard-box margin-top-0">
+
+								<!-- Headline -->
+								<div class="headline">
+									<h3><i class="icon-feather-folder-plus"></i> Job Submission Form</h3>
+								</div>
+
+								<div class="content with-padding padding-bottom-10">
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+									<div class="row">
+										<div class="col-xl-6">
+											<div class="submit-field">
+												<h5>Job Title</h5>
+												<input value="{{ form.title.value }}" name="title" type="text" class="with-border">
+											</div>
+										</div>
+                                        <div class="col-xl-6">
+											<div class="submit-field">
+												<h5>Company Name</h5>
+												<input value="{{ form.company.value }}" name="company" type="text" class="with-border">
+											</div>
+										</div>
+
+										<div class="col-xl-6">
+											<div class="submit-field">
+												<h5>Job Type</h5>
+												<select  class="selectpicker with-border" data-size="7" name="type"
+													title="Select Job Type">
+                                                    <option selected readonly disabled>{{ form.type.value }}</option>
+													<option>Full Time</option>
+													<option>Freelance</option>
+													<option>Part Time</option>
+													<option>Internship</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="col-xl-6">
+											<div class="submit-field">
+												<h5>Job Category</h5>
+												<select class="selectpicker with-border" data-size="7" name="category"
+													title="Select Category">
+                                                    <option selected readonly disabled>{{ form.category.value }}</option>
+													<option>Accounting and Finance</option>
+													<option>Clerical & Data Entry</option>
+													<option>Counseling</option>
+													<option>Court Administration</option>
+													<option>Human Resources</option>
+													<option>Investigative</option>
+													<option>IT and Computers</option>
+													<option>Law Enforcement</option>
+													<option>Management</option>
+													<option>Miscellaneous</option>
+													<option>Public Relations</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="col-xl-4">
+											<div class="submit-field">
+												<h5>Location</h5>
+												<div class="input-with-icon">
+													<div id="autocomplete-container">
+														<input value="{{ form.location.value }}" name="location" id="autocomplete-input" class="with-border" type="text"
+															placeholder="Type Address">
+													</div>
+													<i class="icon-material-outline-location-on"></i>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-4">
+											<div class="submit-field">
+												<h5>Deadline</h5>
+												<input value="{{ form.deadline.value }}" name="deadline" type="date" class="with-border">
+											</div>
+										</div>
+
+                                        <div class="col-xl-4">
+											<div class="submit-field">
+												<h5>Stipend <i class="help-icon"
+														data-tippy-placement="right" title="$1 = 70 credits"></i></h5>
+												<div class="row">
+													<div class="col-xl-6">
+														<div class="input-with-icon">
+															<input value="{{ form.min_salary.value }}" name="min_salary" class="with-border" type="text" placeholder="Min">
+															<i class="currency">USD</i>
+														</div>
+													</div>
+													<div class="col-xl-6">
+														<div class="input-with-icon">
+															<input value="{{ form.max_salary.value }}" name="max_salary" class="with-border" type="text" placeholder="Max">
+															<i class="currency">USD</i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-12">
+											<div class="submit-field">
+												<h5>Tags <span>(optional)</span> <i class="help-icon"
+														data-tippy-placement="right" title="Maximum of 10 tags"></i>
+												</h5>
+{#                                                <button class="keyword-input-button ripple-effect"><i#}
+{#																class="icon-material-outline-add"></i></button>#}
+													<div class="submit-field">
+														<!-- Skills List -->
+                                                         <input name="tags" onkeydown="return event.key == 'Enter';" style="width: 100%" type="text" value="HTML5, CSS3, Javascript, {{ form.min_salary.value }}" data-role="tagsinput" >
+													</div>
+
+											</div>
+										</div>
+
+										<div class="col-xl-12">
+											<div class="submit-field">
+												<h5>Job Description</h5>
+												<textarea  name="description" cols="30" rows="5" class="with-border">{{ form.description.value }}</textarea>
+												<div class="uploadButton margin-top-30">
+													<input class="uploadButton-input" type="file" name="file_one"
+														accept="image/*, application/pdf" id="upload"/>
+													<label class="uploadButton-button ripple-effect" for="upload">Upload
+														Company Logo</label>
+													<span class="uploadButton-file-name">Images or documents that might
+														be helpful in describing your job</span>
+												</div>
+											</div>
+										</div>
+                                        <div class="col-xl-12">
+                                            <button type="submit" class="button ripple-effect big margin-top-30"><i class="icon-feather-plus"></i>
+                                                Post a Job</button>
+                                        </div>
+									</div>
+
+                                        </form>
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+					<!-- Row / End -->
+
+					<!-- Footer -->
+					<div class="dashboard-footer-spacer"></div>
+					<div class="small-footer margin-top-15">
+{#						<div class="small-footer-copyrights">#}
+{#							© 2019 <strong>Hireo</strong>. All Rights Reserved.#}
+{#						</div>#}
+						<ul class="footer-social-links">
+							<li>
+								<a href="#" title="Facebook" data-tippy-placement="top">
+									<i class="icon-brand-facebook-f"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="Twitter" data-tippy-placement="top">
+									<i class="icon-brand-twitter"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="Google Plus" data-tippy-placement="top">
+									<i class="icon-brand-google-plus-g"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="LinkedIn" data-tippy-placement="top">
+									<i class="icon-brand-linkedin-in"></i>
+								</a>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<!-- Footer / End -->
+
+				</div>
+			</div>
+			<!-- Dashboard Content / End -->
+
+		</div>
+		<!-- Dashboard Container / End -->
+
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>#}
+{#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>#}
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+
+
+    <script type="text/javascript">
+		$(document).ready(function() {
+		// Snackbar for user status switcher
+        if(document.getElementById("snack_post").innerHTML === ''){
+            console.log("failed")
+        }
+        else{
+			Snackbar.show({
+				text: document.getElementById("snack_post").innerHTML,
+				pos: 'top-center',
+				showAction: true,
+				actionText: "Dismiss",
+				duration: 6000,
+				textColor: '#fff',
+				backgroundColor: '#383838',
+                actionTextColor: '#43a047',
+			});
+        }
+
+		});
+	</script>
+
+
+{% endblock %}

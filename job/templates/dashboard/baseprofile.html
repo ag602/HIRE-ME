@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+{% load notifications_tags %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+     <style>
+    .bootstrap-tagsinput{
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.12)!important;
+        border:none!important;
+    }
+    .bootstrap-tagsinput .tag{
+        color: #2a41e8;
+    }
+
+    .label-info{
+        background-color: rgba(102,103,107,.07);
+        line-height: 35px;
+        font-size: 14.7px;
+        overflow: hidden;
+        max-width: 100%;
+        transition: .4s;
+        animation: KeywordIn .3s ease-in-out;
+        height: 35px;
+        margin: 0 7px 7px 0;
+        border-radius: 4px;
+    }
+    .tag{
+        padding: 7px;
+    }
+    .bootstrap-tagsinput{
+        width: 100%;
+    }
+    </style>
+	<!-- Wrapper -->
+	<div id="wrap">
+
+		<!-- Dashboard Container -->
+		<div class="dashboard-container">
+            <!-- Dashboard Sidebar
+	================================================== -->
+			<div class="dashboard-sidebar">
+				<div class="dashboard-sidebar-inner" data-simplebar>
+					<div class="dashboard-nav-container">
+
+						<!-- Responsive Navigation Trigger -->
+						<a href="#" class="dashboard-responsive-nav-trigger">
+							<span class="hamburger hamburger--collapse">
+								<span class="hamburger-box">
+									<span class="hamburger-inner"></span>
+								</span>
+							</span>
+							<span class="trigger-title">Dashboard Navigation</span>
+						</a>
+
+						<!-- Navigation -->
+						<div class="dashboard-nav">
+							<div class="dashboard-nav-inner">
+
+								<ul data-submenu-title="Profile">
+									<li id="dashboard"><a onclick="myFunction()" href="{% url 'profilepage' %}"><i class="icon-material-outline-dashboard"></i>
+											Dashboard</a></li>
+									<li><a href="{% url 'chats' %}"><i
+												class="icon-material-outline-question-answer"></i> Messages <span
+												class="nav-tag">2</span></a></li>
+									<li><a href="{% url 'notification' %}"><i
+												class="icon-feather-bell"></i> Notifications <span
+												class="nav-tag">{% notifications_unread %}</span></a></li>
+									<li><a href="{% url 'profile' user.id %}"><i
+												class="icon-line-awesome-pencil-square-o"></i> Edit your Profile</a></li>
+{#									<li><a href="dashboard-reviews.html"><i#}
+{#												class="icon-material-outline-rate-review"></i> Reviews</a></li>#}
+								</ul>
+
+								<ul data-submenu-title="Organize and Manage">
+									<li><a href="#"><i class="icon-material-outline-business-center"></i> Jobs</a>
+										<ul>
+											<li><a href="{% url 'managejobs' %}">Manage Jobs <span
+														class="nav-tag">{{ created_job }}</span></a></li>
+											<li><a href="{% url 'managecandidates' %}">Manage Candidates</a></li>
+
+                                            <li><a href="{% url 'appliedjobs' %}">Applied Jobs</a></li>
+
+										</ul>
+									</li>
+                                    <li><a href="{% url 'bookmark' %}"><i class="icon-feather-bookmark"></i> Saved Jobs</a>
+									</li>
+                                    <li><a href="{% url 'post' %}"><i class="icon-material-outline-add"></i> Post a Job</a></li>
+                                    <li><a href="{% url 'findjob' %}"><i class="icon-material-outline-search"></i> Find a Job</a></li>
+
+								</ul>
+
+
+								<ul data-submenu-title="Account">
+                                    <li ><a href="{% url 'profilepage' %}"><i
+												class="icon-material-outline-settings"></i> Settings</a></li>
+                                    <li><a href="{% url 'orders' %}"><i
+												class="icon-material-outline-shopping-cart"></i> Orders</a></li>
+									<li><a href="{% url 'credits' %}"><i
+												class="icon-material-outline-monetization-on"></i> Credits</a></li>
+									<li><a href="{% url 'logout' %}"><i
+												class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+								</ul>
+
+							</div>
+						</div>
+						<!-- Navigation / End -->
+
+					</div>
+				</div>
+			</div>
+			<!-- Dashboard Sidebar / End -->
+
+			<!-- Dashboard Content
+	================================================== -->
+		    {% block profilecontent %}
+
+            {% endblock %}
+			<!-- Dashboard Content / End -->
+
+		</div>
+		<!-- Dashboard Container / End -->
+
+	</div>
+	<!-- Wrapper / End -->
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+    <script>
+    function myFunction() {
+  var element = document.getElementById("dashboard");
+  element.classList.add("active");
+}
+    </script>
+{% endblock %}
+

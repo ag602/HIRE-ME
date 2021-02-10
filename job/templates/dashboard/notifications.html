@@ -1,0 +1,97 @@
+{% extends 'dashboard/baseprofile.html' %}
+{% load static %}
+{% block profilecontent %}
+{% load notifications_tags %}
+<div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+
+					<!-- Dashboard Headline -->
+					<div class="dashboard-headline">
+						<h3>Notifications</h3>
+{#						<span class="margin-top-7">Job Applications for <a href="#">Full Stack PHP Developer</a></span>#}
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li><a href="{% url 'profilepage' %}">Dashboard</a></li>
+								<li>Notifications</li>
+							</ul>
+						</nav>
+					</div>
+
+                    					<!-- Row -->
+					<div class="row">
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-12">
+							<div class="dashboard-box">
+								<div class="headline">
+									<h3><i class="icon-material-baseline-notifications-none"></i> Notifications</h3>
+									<button class="mark-as-read ripple-effect-dark" data-tippy-placement="left"
+										title="Mark all as read">
+										<i class="icon-feather-check-square"></i>
+									</button>
+								</div>
+								<div class="content">
+									<ul class="dashboard-box-list">
+                                        {% for i in notifications %}
+                                            {% if i.data.data.exists %}
+                                                <li>
+                                            <a href="{% url 'jobpage' i.data.data %}">
+                                                <span class="notification-icon"><i
+													class="icon-material-outline-group"></i></span>
+											<span class="notification-text">
+{#												<strong>Michael Shannah</strong> applied for a job <a href="#">Full#}
+{#													Stack Software Engineer</a>#}
+                                                {{ i.verb }}
+											</span>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right">
+												<a href="#" class="button ripple-effect ico" title="Mark as read"
+													data-tippy-placement="left"><i
+														class="icon-feather-check-square"></i></a>
+											</div>
+                                            </a>
+										</li>
+                                            {% else %}
+                                                <li>
+                                            <a href="#">
+                                                <span class="notification-icon"><i
+													class="icon-material-outline-group"></i></span>
+											<span class="notification-text">
+{#												<strong>Michael Shannah</strong> applied for a job <a href="#">Full#}
+{#													Stack Software Engineer</a>#}
+                                                {{ i.verb }}
+											</span>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right">
+												<a href="#" class="button ripple-effect ico" title="Mark as read"
+													data-tippy-placement="left"><i
+														class="icon-feather-check-square"></i></a>
+											</div>
+                                            </a>
+										</li>
+                                            {% endif %}
+
+                                        {% endfor %}
+
+									</ul>
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+					<!-- Row / End -->
+
+
+
+
+
+                </div>
+</div>
+{% endblock %}

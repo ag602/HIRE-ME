@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+	<meta charset="utf-8">
+	<title>HIRE ME Invoice</title>
+	<link rel="stylesheet" href="{% static 'css/invoice.css' %}">
+</head>
+
+<body>
+
+	<!-- Print Button -->
+	<div class="print-button-container">
+		<a href="javascript:window.print()" class="print-button">Print this invoice</a>
+	</div>
+
+	<!-- Invoice -->
+	<div id="invoice">
+
+		<!-- Header -->
+		<div class="row">
+			<div class="col-xl-6">
+				<div id="logo"><img src="{% static 'images/LogoMakr_8SERgk.png' %}" alt=""></div>
+			</div>
+
+			<div class="col-xl-6">
+
+				<p id="details">
+					<strong>Invoice Id:</strong> #{{ order.invoice_id }} <br>
+					<strong>Issued:</strong> {{ order.date }} <br>
+					Due 31 days from date of issue
+				</p>
+			</div>
+		</div>
+
+
+		<!-- Client & Supplier -->
+		<div class="row">
+			<div class="col-xl-12">
+				<h2>Invoice</h2>
+			</div>
+
+			<div class="col-xl-6">
+				<strong class="margin-bottom-5">Supplier</strong>
+				<p>
+					HIRE ME Ltd. <br>
+					21 St Andrews Lane <br>
+					London, CF44 6ZL, UK <br>
+				</p>
+			</div>
+
+			<div class="col-xl-6">
+				<strong class="margin-bottom-5">Customer</strong>
+				<p>
+					John Doe <br>
+					36 Edgewater Street <br>
+					Melbourne, 2540, Australia <br>
+				</p>
+			</div>
+		</div>
+
+
+		<!-- Invoice -->
+		<div class="row">
+			<div class="col-xl-12">
+				<table class="margin-top-20">
+					<tr>
+						<th>Description</th>
+						<th>Price ($)</th>
+						<th>VAT ($, 20%)</th>
+                        <th>Discount ($, -{{ order.coupon.discount }}%)</th>
+						<th>Total ($)</th>
+					</tr>
+
+					<tr>
+						<td id="plan">{{ order.plan }}</td>
+						<td id="total_amount"></td>
+						<td id="vat">9.80</td>
+                        <td id="coupon_discount"></td>
+						<td id="final_total">{{ order.total_cost }}</td>
+
+					</tr>
+				</table>
+			</div>
+            <div id="discount_hidden" hidden>{{ order.coupon.discount }}</div>
+
+{#			<div class="col-xl-4 col-xl-offset-8">#}
+{#				<table id="totals">#}
+{#					<tr>#}
+{#						<th>Total Due</th>#}
+{#						<th><span>$58.80</span></th>#}
+{#					</tr>#}
+{#				</table>#}
+{#			</div>#}
+		</div>
+
+
+		<!-- Footer -->
+		<div class="row">
+			<div class="col-xl-12">
+				<ul id="footer">
+					<li><span>www.example.com</span></li>
+					<li><a href="http://www.vasterad.com/cdn-cgi/l/email-protection" class="__cf_email__"
+							data-cfemail="355a53535c565075504d54584559501b565a58">[email&#160;protected]</a></li>
+					<li>(123) 123-456</li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+    <script>
+        plan = document.getElementById("plan").innerHTML;
+        total_amount = document.getElementById("total_amount").innerHTML = 49.00;
+        vat = document.getElementById("vat").innerHTML;
+        discount_hidden = document.getElementById("discount_hidden").innerHTML
+        coupon_discount = document.getElementById("coupon_discount").innerHTML = total_amount*discount_hidden/100;
+        final_total = document.getElementById("final_total").innerHTML;
+        console.log(plan,total_amount,vat,coupon_doscount,final_total)
+    </script>
+{#	<script data-cfasync="false" src="{% static 'js/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>#}
+</body>
+
+
+</html>

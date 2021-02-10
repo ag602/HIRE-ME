@@ -1,0 +1,126 @@
+{% extends 'dashboard/baseprofile.html' %}
+{% load static %}
+{% block profilecontent %}
+			<!-- Dashboard Content
+	================================================== -->
+			<div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+
+					<!-- Dashboard Headline -->
+					<div class="dashboard-headline">
+						<h3>Manage Jobs</h3>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li><a href="{% url 'profilepage' %}">Dashboard</a></li>
+								<li>Manage Jobs</li>
+							</ul>
+						</nav>
+					</div>
+
+					<!-- Row -->
+					<div class="row">
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-12">
+							<div class="dashboard-box margin-top-0">
+
+								<!-- Headline -->
+								<div class="headline">
+									<h3><i class="icon-material-outline-business-center"></i> My Job Listings</h3>
+								</div>
+
+								<div class="content">
+									<ul class="dashboard-box-list">
+                                        {% for job in created_jobs %}
+										<li>
+											<!-- Job Listing -->
+											<div class="job-listing">
+
+												<!-- Job Listing Details -->
+												<div class="job-listing-details">
+
+													<!-- Logo -->
+													<!-- 											<a href="#" class="job-listing-company-logo">
+												<img src="images/company-logo-05.png" alt="">
+											</a> -->
+
+													<!-- Details -->
+													<div class="job-listing-description">
+														<h3 class="job-listing-title"><a href="{% url 'jobpage' job.id %}">{{ job.title }}</a> <span
+																class="dashboard-status-button green">Pending
+																Approval</span></h3>
+
+														<!-- Job Listing Footer -->
+														<div class="job-listing-footer">
+															<ul>
+																<li><i class="icon-material-outline-date-range"></i>
+																	Posted on {{ job.created_at }}</li>
+																<li><i class="icon-material-outline-date-range"></i>
+																	Expiring {{ job.deadline }}</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right always-visible">
+
+												<a href="{% url 'post_edit' job.id %}" class="button gray ripple-effect ico" title="Edit"
+													data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
+												<a href="#small-dialog-2" class="popup-with-zoom-anim button ripple-effect button gray ripple-effect ico" title="Remove"
+													data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
+											</div>
+
+
+                          <!-- Delete Job Popup================================================== -->
+                            <div id="small-dialog-2" class="justify-content-center zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+                                <!--Tabs -->
+                                <div class="sign-in-form">
+
+                                    <ul class="popup-tabs-nav">
+                                        <li><a href="#tab1">Delete Job</a></li>
+                                    </ul>
+
+                                    <div class="popup-tabs-container" style="background-color: white">
+
+                                        <!-- Tab -->
+                                        <div class="popup-tab-content" id="tab">
+
+                                            <!-- Welcome Text -->
+                                            <div class="welcome-text">
+                                                <h3>Are you sure want to delete this job?</h3>
+{#                                                <h3>Accept {{ i.user.first_name }} {% url 'delete' job.id %}{{ i.user.last_name }}'s Offer</h3>#}
+{#                                                <h4>{{ i.job }}</h4>#}
+                                            </div>
+
+                                            <form id="terms" action="{% url 'delete' job.id %}">
+                                            <button class="margin-top-15 button full-width button-sliding-icon ripple-effect" type="submit"
+                                                form="terms">Delete Job <i class="icon-material-outline-arrow-right-alt"></i></button>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Delete Job Popup / End -->
+										</li>
+                                        {% endfor %}
+
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- Row / End -->
+				</div>
+			</div>
+			<!-- Dashboard Content / End -->
+
+{% endblock %}

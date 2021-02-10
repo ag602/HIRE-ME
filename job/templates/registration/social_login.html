@@ -1,0 +1,141 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+    <style>
+    .submit-field{
+        margin-bottom: 10px!important;
+    }
+    {#.login-register-page.account-type input.account-type-radio:checked~label{color:#fff;background-color:#47bb67}#}
+    </style>
+		<!-- Titlebar
+================================================== -->
+		<div id="titlebar" class="gradient">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<h2>Register</h2>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li>Register</li>
+							</ul>
+						</nav>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Page Content
+================================================== -->
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-5 offset-xl-3">
+
+					<div class="login-register-page">
+						<!-- Welcome Text -->
+						<div class="welcome-text">
+{#                            <h4 style="color: red">{{ messages.password_mismatch }}</h4>#}
+                                    {% for field in form %}
+                                    {% for error in field.errors %}
+                                      <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
+                                    {% endfor %}
+                            {{ messageprofile }}
+                            <h4 style="color: red">{{ existing_user }}</h4>
+							<h3 style="font-size: 26px;margin-top: 5%">Just a few more details!</h3>
+							<span>Already have an account? <a href="pages-login.html">Log In!</a></span>
+						</div>
+
+						<!-- Form -->
+
+						<form method="POST" id="register-account-form-2">
+
+                            {% csrf_token %}
+
+                               <!-- Account Type -->
+                            <p style="font-size: 16px">Account Type:</p>
+                                <div class="row margin-bottom-10 margin-top-10">
+                                    <div class="col-lg-4">
+                                        <div class="radio">
+                                            <input id="radio-1" name="role" value="employer" type="radio" checked>
+                                            <label for="radio-1"><span class="radio-label"></span>Employer</label>
+                                        </div>
+                                    </div>
+
+                                <br>
+                                    <div class="col-lg-4">
+                                        <div class="radio">
+                                            <input id="radio-2" name="role" value="freelancer" type="radio">
+                                            <label for="radio-2"><span class="radio-label"></span> Freelancer</label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-lg-4">
+                                        <div class="radio">
+                                            <input id="radio-3" name="role" value="both" type="radio">
+                                            <label for="radio-3"><span class="radio-label"></span> Both</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            {{ form.password1.label_tag }}
+                                  <div class="input-with-icon-left">
+                                     <i class="icon-material-outline-lock"></i>
+                                     <div class="input-text with-border" id="tooltext" data-tippy-placement="right"
+                                          title="{{ form.password1.help_text }}">
+                                         {{ form.password1 }}
+                                     </div>
+                                 </div>
+
+                            {{ form.password2.label_tag }}
+                                  <div class="input-with-icon-left">
+                                     <i class="icon-material-outline-lock"></i>
+                                     <div class="input-text with-border">
+                                         {{ form.password2 }}
+                                     </div>
+                                 </div>
+
+                                <button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit"
+                                                        >Sign Up <i class="icon-material-outline-arrow-right-alt"></i></button>
+                        </form>
+
+
+
+{#						<!-- Social Login -->#}
+{#						<div class="social-login-separator"><span>or</span></div>#}
+{#						<div class="social-login-buttons">#}
+{#							<button class="facebook-login ripple-effect"><i class="icon-brand-facebook-f"></i> Register#}
+{#								via Facebook</button>#}
+{#							<button style="width: 100%" class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> Register#}
+{#								via Google+</button>#}
+{#						</div>#}
+					</div>
+                </div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Spacer -->
+		<div class="margin-top-70"></div>
+		<!-- Spacer / End-->
+
+
+    <script>
+    $("#tooltext")
+    .title({ content: '<b style="color: red">Tooltip</b> <i>text</i>' });
+    </script>
+    <script>
+    $( document ).ready(function() {
+          $('[name="first_name"]').focus();
+});
+    </script>
+
+{% endblock %}

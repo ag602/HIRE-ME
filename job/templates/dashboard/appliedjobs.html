@@ -1,0 +1,95 @@
+{% extends 'dashboard/baseprofile.html' %}
+{% load static %}
+{% block profilecontent %}
+
+			<!-- Dashboard Content
+	================================================== -->
+			<div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+
+					<!-- Dashboard Headline -->
+					<div class="dashboard-headline">
+						<h3>Applied Jobs</h3>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li><a href="{% url 'profilepage' %}">Dashboard</a></li>
+								<li>Applied Jobs</li>
+							</ul>
+						</nav>
+					</div>
+
+					<!-- Row -->
+					<div class="row">
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-12">
+							<div class="dashboard-box margin-top-0">
+
+								<!-- Headline -->
+								<div class="headline">
+									<h3><i class="icon-material-outline-business-center"></i> Applied Jobs</h3>
+								</div>
+
+								<div class="content">
+									<ul class="dashboard-box-list">
+                                    {% for i in applied_jobs_set.all %}
+                                        {{ i }}
+                                    {% endfor %}
+                                        {% for job in applied_jobs %}
+										<li>
+											<!-- Job Listing -->
+											<div class="job-listing">
+
+												<!-- Job Listing Details -->
+												<div class="job-listing-details">
+
+													<!-- Logo -->
+													<!-- 											<a href="#" class="job-listing-company-logo">
+												<img src="images/company-logo-05.png" alt="">
+											</a> -->
+
+													<!-- Details -->
+													<div class="job-listing-description">
+														<h3 class="job-listing-title"><a href="{% url 'jobpage' %}{{ job.job_id }}">{{ job.job }}</a> <span
+																class="dashboard-status-button green">Pending
+																Approval</span></h3>
+
+														<!-- Job Listing Footer -->
+														<div class="job-listing-footer">
+															<ul>
+																<li><i class="icon-material-outline-date-range"></i>
+																	Applied on {{ job.applied_at }}</li>
+{#																<li><i class="icon-material-outline-date-range"></i>#}
+{#																	Expiring on {{ job.job }}</li>#}
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right always-visible">
+
+												<a href="#" class="button gray ripple-effect ico" title="Edit"
+													data-tippy-placement="top"><i class="icon-feather-edit"></i></a>
+												<a href="#" class="button gray ripple-effect ico" title="Remove"
+													data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
+											</div>
+										</li>
+                                        {% endfor %}
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- Row / End -->
+				</div>
+			</div>
+			<!-- Dashboard Content / End -->
+
+
+{% endblock %}

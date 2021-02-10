@@ -1,0 +1,100 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+    <style>
+   #googlebutton #google:hover{
+        color: white!important;
+    }
+    #linkedinbutton{
+        border-color: #0e76a8!important;
+        color: #0e76a8!important;
+    }
+    #linkedin:hover{
+        color: white!important;
+    }
+    .social-login-buttons #linkedinbutton:hover{background-color:#0e76a8;color: white!important;}
+    </style>
+
+		<!-- Titlebar
+================================================== -->
+		<div id="titlebar" class="gradient">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<h2>Register</h2>
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li>Register</li>
+							</ul>
+						</nav>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Page Content
+================================================== -->
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-5 offset-xl-3">
+
+					<div class="login-register-page">
+						<!-- Welcome Text -->
+						<div class="welcome-text">
+{#                            <h4 style="color: red">{{ messages.password_mismatch }}</h4>#}
+                                    {% for field in form %}
+                                    {% for error in field.errors %}
+                                      <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
+                                    {% endfor %}
+                            <h4 style="color: red">{{ existing_user }}</h4>
+                            <h4 style="color: red">{{ context }}</h4>
+							<h3 style="font-size: 26px;margin-top: 5%">Let's create your account!</h3>
+							<span>Already have an account? <a href="{% url 'loginpage' %}">Log In!</a></span>
+						</div>
+
+						<!-- Form -->
+
+						<form method="POST" id="register-account-form" >
+                            {% csrf_token %}
+                            {{ form.email.label_tag }}
+                                 <div class="input-with-icon-left">
+                                     <i class="icon-material-baseline-mail-outline"></i>
+                                     <div class="input-text with-border">
+                                         {{ form.email }}
+                                     </div>
+                                 </div>
+
+                                <button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit"
+                                                        >Sign Up <i class="icon-material-outline-arrow-right-alt"></i></button>
+                        </form>
+
+
+
+						<!-- Social Login -->
+						<div class="social-login-separator"><span>or</span></div>
+						<div class="social-login-buttons">
+							<button id="linkedinbutton" class="linkedin-login ripple-effect"><a id="linkedin" href="{% url 'social:begin' backend='linkedin-oauth2' %}" style="color: #0e76a8"><i class="fab fa-linkedin-in"></i> Register
+								via Linkedin</a></button>
+							<button id="googlebutton" style="width: 100%" class="google-login ripple-effect"><a id="google" href="{% url "social:begin" "google-oauth2" %}" style="color:#dd4b39 "><i class="icon-brand-google-plus-g"></i> Register
+								via Google+</a></button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Spacer -->
+		<div class="margin-top-70"></div>
+		<!-- Spacer / End-->
+
+{% endblock %}

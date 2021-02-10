@@ -1,0 +1,107 @@
+{% extends 'dashboard/baseprofile.html' %}
+{% load static %}
+{% block profilecontent %}
+
+			<!-- Dashboard Content
+	================================================== -->
+			<div class="dashboard-content-container" data-simplebar>
+				<div class="dashboard-content-inner">
+
+					<!-- Dashboard Headline -->
+					<div class="dashboard-headline">
+						<h3>Saved Jobs</h3>
+{#						<span class="margin-top-7">Job Applications for <a href="#">Full Stack PHP Developer</a></span>#}
+
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="dark">
+							<ul>
+								<li><a href="#">Home</a></li>
+								<li><a href="{% url 'bookmark' %}">Dashboard</a></li>
+								<li>Saved Jobs</li>
+							</ul>
+						</nav>
+					</div>
+
+					<!-- Row -->
+					<div class="row">
+
+						<!-- Dashboard Box -->
+						<div class="col-xl-12">
+							<div class="dashboard-box margin-top-0">
+
+								<!-- Headline -->
+								<div class="headline">
+									<h3><i class="icon-material-outline-business-center"></i> Saved Jobs</h3>
+								</div>
+
+								<div class="content">
+									<ul class="dashboard-box-list">
+                                        {% for bookmark in bookmarks %}
+										<li>
+											<!-- Job Listing -->
+											<div class="job-listing">
+
+												<!-- Job Listing Details -->
+												<div class="job-listing-details">
+
+													<!-- Logo -->
+													<a href="#" class="job-listing-company-logo">
+														<img src="{% static 'images/company-logo-05.png' %}" alt="">
+													</a>
+
+													<!-- Details -->
+													<div class="job-listing-description">
+														<h3 class="job-listing-title"><a href="#">{{ bookmark }}</a></h3>
+
+                                                        {% for i in bookmark.user.post.values %}
+                                                            {% if bookmark.job_id == i.id %}
+                                                                <!-- Job Listing Footer -->
+														<div class="job-listing-footer">
+															<ul>
+																<li><i class="icon-material-outline-business"></i>
+																	{{ i.company }}</li>
+																<li><i class="icon-material-outline-location-on"></i>
+																	{{ i.location }}</li>
+																<li><i
+																		class="icon-material-outline-business-center"></i>
+																	{{ i.type }}</li>
+																<li><i class="icon-material-outline-access-time"></i> {{ i.created_at }}</li>
+															</ul>
+														</div>
+                                                            {% endif %}
+                                                        {% endfor %}
+
+													</div>
+
+												</div>
+
+											</div>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right">
+												<a href="#" class="button red ripple-effect ico" title="Remove"
+													data-tippy-placement="left"><i class="icon-feather-trash-2"></i></a>
+											</div>
+										</li>
+                                        {% endfor %}
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- Row / End -->
+
+					<!-- Footer -->
+					<div class="dashboard-footer-spacer"></div>
+
+
+				</div>
+			</div>
+			<!-- Dashboard Content / End -->
+
+
+
+
+
+{% endblock %}
